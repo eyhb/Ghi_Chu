@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#252525</color>
+    <color name="colorPrimaryDark">#00000000</color>
+    <color name="navigationBar">#252525</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="divider">#444444</color>
+    <color name="background">#252525</color>
+    <color name="item">#313131</color>
+    <color name="addButton">#333333</color>
+    <color name="yellow">#F8BC00</color>
+    <color name="white">#FFFFFF</color>
+    <color name="icon">#919396</color>
+    <color name="green">#168F16</color>
+</resources>

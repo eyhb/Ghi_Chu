@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat"
+    tools:context=".AddNoteActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:elevation="0dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <EditText
+            android:id="@+id/edTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@null"
+            android:hint="Tiêu đề"
+            android:inputType="text|textNoSuggestions"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:textSize="25dp" />
+
+        <EditText
+            android:id="@+id/edNote"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="Ghi chú"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:singleLine="false"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/addButton"
+        android:onClick="add"
+        android:src="@drawable/ic_done"
+        android:tint="@color/yellow"
+        app:backgroundTint="@color/yellow"
+        app:borderWidth="1dp"
+        app:fabCustomSize="60dp"
+        app:maxImageSize="48dp" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

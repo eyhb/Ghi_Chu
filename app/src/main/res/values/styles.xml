@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/navigationBar</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/icon</item>
+        <item name="android:tint">@color/icon</item>
+        <item name="colorControlNormal">@color/icon</item>
+        <item name="colorControlHighlight">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="android:icon">@color/icon</item>
+        <item name="android:listDivider">@color/divider</item>
+        <item name="android:background">@color/background</item>
+        <item name="android:fontFamily">@font/myfont</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+</resources>
