@@ -1,4 +1,4 @@
-package com.example.ghich;
+package com.example.ghi_chu;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;

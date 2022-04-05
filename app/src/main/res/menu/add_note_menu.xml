@@ -2,8 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/addLabel"
-        android:icon="@drawable/ic_label_outline"
+        android:id="@+id/pin"
+        android:icon="@drawable/ic_pin"
+        android:title=""
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/reminder"
+        android:icon="@drawable/ic_add_reminder"
+        android:title=""
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/archive"
+        android:icon="@drawable/ic_archive"
         android:title=""
         app:showAsAction="always" />
 </menu>

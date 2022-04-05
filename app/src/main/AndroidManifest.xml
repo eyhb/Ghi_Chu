@@ -9,15 +9,15 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowNotesByLabelActivity"></activity>
+        <activity android:name="com.example.ghi_chu.ShowNotesByLabelActivity"></activity>
         <activity
-            android:name=".AddLabelActivity"
+            android:name="com.example.ghi_chu.AddLabelActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".AddNoteActivity"
+        <activity android:name="com.example.ghi_chu.AddNoteActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".LabelActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.ghi_chu.LabelActivity" />
+        <activity android:name="com.example.ghi_chu.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

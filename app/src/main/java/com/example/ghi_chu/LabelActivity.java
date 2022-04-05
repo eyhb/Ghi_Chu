@@ -1,8 +1,10 @@
-package com.example.ghich;
+package com.example.ghi_chu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.ghich.R;
 
 public class LabelActivity extends AppCompatActivity {
 

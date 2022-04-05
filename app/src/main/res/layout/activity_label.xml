@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LabelActivity">
+    tools:context="com.example.ghi_chu.LabelActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

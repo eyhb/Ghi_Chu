@@ -1,11 +1,11 @@
-package com.example.ghich;
+package com.example.ghi_chu;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.ghich.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +40,8 @@ public class AddNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Thêm ghi chú");
         toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         intent = getIntent();
@@ -81,7 +84,17 @@ public class AddNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                add();
                 finish();
+                return true;
+            case R.id.archive:
+                setToast(this, "Đã lưu").show();
+                return true;
+            case R.id.reminder:
+                setToast(this, "Thông báo").show();
+                return true;
+            case R.id.pin:
+                setToast(this, "Đã gim").show();
                 return true;
             case R.id.addLabel:
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddNoteActivity.this, R.style.Theme_AppCompat);
@@ -95,9 +108,7 @@ public class AddNoteActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast toast = Toast.makeText(AddNoteActivity.this, "Đã chọn", Toast.LENGTH_SHORT);
-                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                        toast.show();
+                        setToast(AddNoteActivity.this, "Đã chọn").show();
                         dialog.dismiss();
                     }
                 });
@@ -115,7 +126,7 @@ public class AddNoteActivity extends AppCompatActivity {
         }
     }
 
-    public void add(View view) {
+    public void add() {
         inputNote = edNote.getText().toString().trim();
         if (!inputNote.equals("")) {
             note.setTitle(edTitle.getText().toString().trim());
@@ -123,33 +134,32 @@ public class AddNoteActivity extends AppCompatActivity {
             note.setLabel(labelSelected);
             if (noteId == -1) {
                 if (db.insertNote(note)) {
-                    Toast toast = Toast.makeText(this, "Đã thêm", Toast.LENGTH_SHORT);
-                    toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                    toast.show();
+                    setToast(this, "Đã thêm").show();
                     setResult(Activity.RESULT_OK);
                 } else {
-                    Toast toast = Toast.makeText(this, "Lỗi! Thử lại sau.", Toast.LENGTH_SHORT);
-                    toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                    toast.show();
+                    setToast(this, "Lỗi! Thử lại sau.").show();
                 }
             } else {
                 if (db.updateNote(note)) {
-                    Toast toast = Toast.makeText(this, "Đã sửa", Toast.LENGTH_SHORT);
-                    toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                    toast.show();
+                    setToast(this, "Đã sửa").show();
                     setResult(Activity.RESULT_OK);
                 } else {
-                    Toast toast = Toast.makeText(this, "Lỗi! Thử lại sau.", Toast.LENGTH_SHORT);
-                    toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                    toast.show();
+                    setToast(this, "Lỗi! Thử lại sau.").show();
                 }
             }
         } else {
             edTitle.setText(note.getTitle());
             edNote.setText(note.getNote());
-            Toast toast = Toast.makeText(this, "Ghi chú trống!", Toast.LENGTH_SHORT);
-            toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-            toast.show();
+            setToast(this, "Ghi chú trống!").show();
         }
+    }
+
+    public Toast setToast(Context context, String message) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        TextView textView = view.findViewById(android.R.id.message);
+        textView.setBackgroundColor(Color.TRANSPARENT);
+        textView.setTextColor(Color.DKGRAY);
+        return toast;
     }
 }

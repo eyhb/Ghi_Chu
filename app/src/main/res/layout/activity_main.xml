@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
     android:theme="@style/Theme.AppCompat"
-    tools:context=".MainActivity"
+    tools:context="com.example.ghi_chu.MainActivity"
     tools:openDrawer="start">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

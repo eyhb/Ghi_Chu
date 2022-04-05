@@ -1,4 +1,4 @@
-package com.example.ghich;
+package com.example.ghi_chu;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ghich.R;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.ghich;
+package com.example.ghi_chu;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,7 +19,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE notes (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, note TEXT, label TEXT, dateTime TEXT, trash INTEGER)");
+        db.execSQL("CREATE TABLE notes (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title TEXT," +
+                "note TEXT," +
+                "label TEXT," +
+                "dateCreated TEXT," +
+                "dateRemind TEXT," +
+                "location TEXT," +
+                "pinned BOOLEAN," +
+                "archive BOOLEAN," +
+                "trash BOOLEAN)");
         db.execSQL("CREATE TABLE labels (id INTEGER PRIMARY KEY AUTOINCREMENT, label TEXT)");
     }
 

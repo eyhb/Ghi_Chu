@@ -1,14 +1,15 @@
-package com.example.ghich;
+package com.example.ghi_chu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.example.ghich.R;
 
 import java.util.ArrayList;
 import java.util.List;

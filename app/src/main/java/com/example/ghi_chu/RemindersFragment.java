@@ -1,4 +1,4 @@
-package com.example.ghich;
+package com.example.ghi_chu;
 
 
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.example.ghich.R;
 
 import java.util.List;
 

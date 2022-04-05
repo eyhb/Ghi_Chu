@@ -1,4 +1,4 @@
-package com.example.ghich;
+package com.example.ghi_chu;
 
 import android.os.Bundle;
 
@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
+
+import com.example.ghich.R;
 
 
 /**
