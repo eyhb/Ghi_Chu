@@ -12,7 +12,6 @@
         <activity android:name="com.example.ghi_chu.ShowNotesByLabelActivity"></activity>
         <activity
             android:name="com.example.ghi_chu.AddLabelActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden"
             android:configChanges="orientation|screenSize"/>
         <activity android:name="com.example.ghi_chu.AddNoteActivity"
             android:windowSoftInputMode="adjustResize"/>

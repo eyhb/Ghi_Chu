@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,16 +40,11 @@ public class AddNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setToolbar();
+        setEditText();
         intent = getIntent();
         noteId = intent.getIntExtra("noteId", -1);
         note = new Note();
-        edTitle = findViewById(R.id.edTitle);
-        edNote = findViewById(R.id.edNote);
         listLabel = new ArrayList<Label>();
         stringList = new ArrayList<String>();
         stringList.add("");
@@ -72,6 +68,19 @@ public class AddNoteActivity extends AppCompatActivity {
                     labelPosition = 0;
             }
         }
+    }
+
+    public void setToolbar() {
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void setEditText() {
+        edTitle = findViewById(R.id.edTitle);
+        edNote = findViewById(R.id.edNote);
     }
 
     @Override
@@ -99,25 +108,14 @@ public class AddNoteActivity extends AppCompatActivity {
             case R.id.addLabel:
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddNoteActivity.this, R.style.Theme_AppCompat);
                 builder.setTitle("Chọn nhãn");
-                builder.setSingleChoiceItems(stringList.toArray(new String[stringList.size()]), labelPosition, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        labelSelected = stringList.get(which);
-                    }
+                builder.setSingleChoiceItems(stringList.toArray(new String[stringList.size()]),
+                        labelPosition,
+                        (dialog, which) -> labelSelected = stringList.get(which));
+                builder.setPositiveButton("OK", (dialog, which) -> {
+                    setToast(AddNoteActivity.this, "Đã chọn").show();
+                    dialog.dismiss();
                 });
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setToast(AddNoteActivity.this, "Đã chọn").show();
-                        dialog.dismiss();
-                    }
-                });
-                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 return true;
