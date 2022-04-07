@@ -67,84 +67,137 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
         }
         if (position == 0) {
             holder.imgLabel.setImageResource(R.drawable.ic_add);
-            holder.imgLabel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            holder.imgLabel.setOnClickListener(v -> {
 //                    showKeyboard();
-                    holder.edLabel.requestFocus();
-                }
+                holder.edLabel.requestFocus();
             });
             holder.edLabel.setHint("Tạo nhãn mới");
             holder.imgDelete.setVisibility(View.INVISIBLE);
-            holder.edLabel.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {
-                        holder.imgLabel.setImageResource(R.drawable.ic_cancel);
-                        holder.imgLabel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                holder.edLabel.clearFocus();
-                                closeKeyboard();
+            holder.edLabel.setOnFocusChangeListener((v, hasFocus) -> {
+                if (hasFocus) {
+                    holder.imgLabel.setImageResource(R.drawable.ic_cancel);
+                    holder.imgLabel.setOnClickListener(v1 -> {
+                        holder.edLabel.clearFocus();
+                        closeKeyboard();
+                    });
+                    holder.imgDelete.setImageResource(R.drawable.ic_done);
+                    holder.imgDelete.setVisibility(View.VISIBLE);
+                    holder.imgDelete.setOnClickListener(v12 -> {
+                        String edLabel = holder.edLabel.getText().toString().trim();
+                        if (!edLabel.equals("")) {
+                            Label label = new Label();
+                            label.setLabel(edLabel);
+                            if (db.insertLable(label)) {
+                                list.add(1, label);
+                                notifyDataSetChanged();
+                                Toast toast = Toast.makeText(getContext(), "Đã thêm", Toast.LENGTH_SHORT);
+                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                                toast.show();
+                                context.setResult(Activity.RESULT_OK);
+                            } else {
+                                Toast toast = Toast.makeText(getContext(), "Nhãn đã có", Toast.LENGTH_SHORT);
+                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                                toast.show();
                             }
-                        });
-                        holder.imgDelete.setImageResource(R.drawable.ic_done);
-                        holder.imgDelete.setVisibility(View.VISIBLE);
-                        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String edLabel = holder.edLabel.getText().toString().trim();
-                                if (!edLabel.equals("")) {
-                                    Label label = new Label();
-                                    label.setLabel(edLabel);
-                                    if (db.insertLable(label)) {
-                                        list.add(1, label);
-                                        notifyDataSetChanged();
-                                        Toast toast = Toast.makeText(getContext(), "Đã thêm", Toast.LENGTH_SHORT);
-                                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                        toast.show();
-                                        context.setResult(Activity.RESULT_OK);
-                                    } else {
-                                        Toast toast = Toast.makeText(getContext(), "Nhãn đã có", Toast.LENGTH_SHORT);
-                                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                        toast.show();
-                                    }
-                                }
-                                holder.edLabel.setText("");
-                                holder.edLabel.clearFocus();
-                                closeKeyboard();
-                            }
-                        });
-                    } else {
-                        holder.imgLabel.setImageResource(R.drawable.ic_add);
-                        holder.imgLabel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                        }
+                        holder.edLabel.setText("");
+                        holder.edLabel.clearFocus();
+                        closeKeyboard();
+                    });
+                } else {
+                    holder.imgLabel.setImageResource(R.drawable.ic_add);
+                    holder.imgLabel.setOnClickListener(v13 -> {
 //                                showKeyboard();
-                                holder.edLabel.requestFocus();
-                            }
-                        });
-                        holder.edLabel.setHint("Tạo nhãn mới");
-                        holder.imgDelete.setVisibility(View.INVISIBLE);
-                    }
+                        holder.edLabel.requestFocus();
+                    });
+                    holder.edLabel.setHint("Tạo nhãn mới");
+                    holder.imgDelete.setVisibility(View.INVISIBLE);
                 }
             });
         } else {
             final String[] label = {list.get(position).getLabel()};
             holder.edLabel.setText(label[0]);
-            holder.imgDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Xóa nhãn?");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            holder.imgDelete.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Xóa nhãn?");
+                builder.setPositiveButton("OK", (dialog, which) -> {
+                    if (db.deleteLabel(label[0])) {
+                        list.remove(position);
+                        notifyDataSetChanged();
+                        Toast toast = Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT);
+                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.DKGRAY);
+                        toast.show();
+                        dialog.dismiss();
+                        context.setResult(Activity.RESULT_OK);
+                    } else {
+                        Toast toast = Toast.makeText(context, "Lỗi! Thử lại sau.", Toast.LENGTH_SHORT);
+                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                        toast.show();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            });
+            holder.edLabel.setOnFocusChangeListener((v, hasFocus) -> {
+                if (hasFocus) {
+                    holder.edLabel.setSelection(holder.edLabel.getText().length());
+                    holder.edLabel.addTextChangedListener(new TextWatcher() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            if (!s.toString().trim().equals("")) {
+                                list.get(position).setLabel(s.toString().trim());
+                            }
+                        }
+                    });
+                    holder.imgDelete.setImageResource(R.drawable.ic_done);
+                    holder.imgDelete.setColorFilter(context.getResources().getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP);
+                    holder.imgDelete.setOnClickListener(v14 -> {
+                        holder.edLabel.clearFocus();
+                        closeKeyboard();
+                    });
+                } else {
+                    if (!holder.edLabel.getText().toString().trim().equals("")) {
+                        if (!label[0].equals(list.get(position).getLabel())) {
+                            if (db.updateLabel(list.get(position), label[0])) {
+                                label[0] = list.get(position).getLabel();
+                                Toast toast = Toast.makeText(getContext(), "Đã sửa", Toast.LENGTH_SHORT);
+                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                                toast.show();
+                                context.setResult(Activity.RESULT_OK);
+                            } else {
+                                Toast toast = Toast.makeText(getContext(), "Nhãn đã có", Toast.LENGTH_SHORT);
+                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                                toast.show();
+                                holder.edLabel.setText(label[0]);
+                            }
+                        } else {
+                            holder.edLabel.setText(label[0]);
+                        }
+                    } else {
+                        list.get(position).setLabel(label[0]);
+                        holder.edLabel.setText(label[0]);
+                    }
+                    holder.imgDelete.setImageResource(R.drawable.ic_trash);
+                    holder.imgDelete.setColorFilter(context.getResources().getColor(R.color.icon), PorterDuff.Mode.SRC_ATOP);
+                    holder.imgDelete.setOnClickListener(v15 -> {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("Xóa nhãn?");
+                        builder.setPositiveButton("OK", (dialog, which) -> {
                             if (db.deleteLabel(label[0])) {
                                 list.remove(position);
                                 notifyDataSetChanged();
                                 Toast toast = Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.DKGRAY);
+                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
                                 toast.show();
                                 dialog.dismiss();
                                 context.setResult(Activity.RESULT_OK);
@@ -154,107 +207,11 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
                                 toast.show();
                                 dialog.dismiss();
                             }
-                        }
+                        });
+                        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     });
-                    builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            });
-            holder.edLabel.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {
-                        holder.edLabel.setSelection(holder.edLabel.getText().length());
-                        holder.edLabel.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                if (!s.toString().trim().equals("")) {
-                                    list.get(position).setLabel(s.toString().trim());
-                                }
-                            }
-                        });
-                        holder.imgDelete.setImageResource(R.drawable.ic_done);
-                        holder.imgDelete.setColorFilter(context.getResources().getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP);
-                        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                holder.edLabel.clearFocus();
-                                closeKeyboard();
-                            }
-                        });
-                    } else {
-                        if (!holder.edLabel.getText().toString().trim().equals("")) {
-                            if (!label[0].equals(list.get(position).getLabel())) {
-                                if (db.updateLabel(list.get(position), label[0])) {
-                                    label[0] = list.get(position).getLabel();
-                                    Toast toast = Toast.makeText(getContext(), "Đã sửa", Toast.LENGTH_SHORT);
-                                    toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                    toast.show();
-                                    context.setResult(Activity.RESULT_OK);
-                                } else {
-                                    Toast toast = Toast.makeText(getContext(), "Nhãn đã có", Toast.LENGTH_SHORT);
-                                    toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                    toast.show();
-                                    holder.edLabel.setText(label[0]);
-                                }
-                            } else {
-                                holder.edLabel.setText(label[0]);
-                            }
-                        } else {
-                            list.get(position).setLabel(label[0]);
-                            holder.edLabel.setText(label[0]);
-                        }
-                        holder.imgDelete.setImageResource(R.drawable.ic_trash);
-                        holder.imgDelete.setColorFilter(context.getResources().getColor(R.color.icon), PorterDuff.Mode.SRC_ATOP);
-                        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setTitle("Xóa nhãn?");
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (db.deleteLabel(label[0])) {
-                                            list.remove(position);
-                                            notifyDataSetChanged();
-                                            Toast toast = Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT);
-                                            toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                            toast.show();
-                                            dialog.dismiss();
-                                            context.setResult(Activity.RESULT_OK);
-                                        } else {
-                                            Toast toast = Toast.makeText(context, "Lỗi! Thử lại sau.", Toast.LENGTH_SHORT);
-                                            toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                            toast.show();
-                                            dialog.dismiss();
-                                        }
-                                    }
-                                });
-                                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
-                            }
-                        });
-                    }
                 }
             });
         }

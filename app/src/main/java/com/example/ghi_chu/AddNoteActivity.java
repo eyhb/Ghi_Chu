@@ -81,6 +81,12 @@ public class AddNoteActivity extends AppCompatActivity {
     public void setEditText() {
         edTitle = findViewById(R.id.edTitle);
         edNote = findViewById(R.id.edNote);
+        edTitle.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                edTitle.clearFocus();
+                return true;
+            } else return false;
+        });
     }
 
     @Override
@@ -93,7 +99,6 @@ public class AddNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                add();
                 finish();
                 return true;
             case R.id.archive:
@@ -122,6 +127,12 @@ public class AddNoteActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        add();
+        super.onDestroy();
     }
 
     public void add() {
