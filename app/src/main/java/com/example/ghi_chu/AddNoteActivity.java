@@ -81,12 +81,13 @@ public class AddNoteActivity extends AppCompatActivity {
     public void setEditText() {
         edTitle = findViewById(R.id.edTitle);
         edNote = findViewById(R.id.edNote);
-        edTitle.setOnKeyListener((v, keyCode, event) -> {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                edTitle.clearFocus();
-                return true;
-            } else return false;
-        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (edTitle.isFocused()) edTitle.clearFocus();
+        else if (edNote.isFocused()) edNote.clearFocus();
+        else super.onBackPressed();
     }
 
     @Override
