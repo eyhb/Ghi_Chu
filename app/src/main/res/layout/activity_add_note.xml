@@ -7,55 +7,74 @@
     android:theme="@style/Theme.AppCompat"
     tools:context="com.example.ghi_chu.AddNoteActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:elevation="0dp">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/topToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <EditText
-            android:id="@+id/edTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@null"
-            android:hint="Tiêu đề"
-            android:inputType="text|textNoSuggestions"
-            android:imeOptions="actionNext"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="10dp"
-            android:textSize="25dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
-
-        <EditText
-            android:id="@+id/edNote"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:background="@null"
-            android:gravity="top"
-            android:hint="Ghi chú"
-            android:inputType="textMultiLine|textNoSuggestions"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"
-            android:singleLine="false"
-            android:textSize="20dp" />
-    </LinearLayout>
+            android:layout_below="@id/topAppBar"
+            android:layout_above="@id/bottomAppBar"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:background="@null"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="Tiêu đề"
+                android:imeOptions="actionNext"
+                android:inputType="text|textNoSuggestions"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                android:textSize="25dp" />
+
+            <EditText
+                android:id="@+id/edNote"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="Ghi chú"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:singleLine="false"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentBottom="true"
+            android:elevation="0dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/bottomToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.google.android.material.appbar.AppBarLayout>
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

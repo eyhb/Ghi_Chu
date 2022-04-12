@@ -29,7 +29,7 @@ public class AddNoteActivity extends AppCompatActivity {
     List<Label> listLabel;
     List<String> stringList;
     Note note;
-    Toolbar toolbar;
+    Toolbar topToolbar, bottomToolbar;
     String inputNote;
     Intent intent;
     int noteId;
@@ -40,7 +40,8 @@ public class AddNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
-        setToolbar();
+        setTopToolbar();
+        setBottomToolbar();
         setEditText();
         intent = getIntent();
         noteId = intent.getIntExtra("noteId", -1);
@@ -70,12 +71,16 @@ public class AddNoteActivity extends AppCompatActivity {
         }
     }
 
-    public void setToolbar() {
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
+    public void setTopToolbar() {
+        topToolbar = findViewById(R.id.topToolbar);
+        topToolbar.setTitleTextColor(Color.WHITE);
+        topToolbar.setTitle("");
+        setSupportActionBar(topToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void setBottomToolbar() {
+        bottomToolbar = findViewById(R.id.bottomToolbar);
     }
 
     public void setEditText() {
