@@ -24,14 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddNoteActivity extends AppCompatActivity {
-    EditText edTitle, edNote;
+    CustomEditText edTitle, edNote;
     DBHelper db;
     List<Label> listLabel;
     List<String> stringList;
     Note note;
     Toolbar topToolbar, bottomToolbar;
     String inputNote;
-    Intent intent;
     int noteId;
     String labelSelected = "";
     int labelPosition = 0;
@@ -43,9 +42,29 @@ public class AddNoteActivity extends AppCompatActivity {
         setTopToolbar();
         setBottomToolbar();
         setEditText();
-        intent = getIntent();
-        noteId = intent.getIntExtra("noteId", -1);
+        noteId = getIntent().getIntExtra("noteId", -1);
         note = new Note();
+        getListLabel();
+    }
+
+    public void setTopToolbar() {
+        topToolbar = findViewById(R.id.topToolbar);
+//        topToolbar.setTitleTextColor(Color.WHITE);
+        topToolbar.setTitle("");
+        setSupportActionBar(topToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void setBottomToolbar() {
+        bottomToolbar = findViewById(R.id.bottomToolbar);
+    }
+
+    public void setEditText() {
+        edTitle = findViewById(R.id.edTitle);
+        edNote = findViewById(R.id.edNote);
+    }
+
+    public void getListLabel() {
         listLabel = new ArrayList<Label>();
         stringList = new ArrayList<String>();
         stringList.add("");
@@ -71,30 +90,6 @@ public class AddNoteActivity extends AppCompatActivity {
         }
     }
 
-    public void setTopToolbar() {
-        topToolbar = findViewById(R.id.topToolbar);
-        topToolbar.setTitleTextColor(Color.WHITE);
-        topToolbar.setTitle("");
-        setSupportActionBar(topToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    public void setBottomToolbar() {
-        bottomToolbar = findViewById(R.id.bottomToolbar);
-    }
-
-    public void setEditText() {
-        edTitle = findViewById(R.id.edTitle);
-        edNote = findViewById(R.id.edNote);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (edTitle.isFocused()) edTitle.clearFocus();
-        else if (edNote.isFocused()) edNote.clearFocus();
-        else super.onBackPressed();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.add_note_menu, menu);
@@ -105,6 +100,7 @@ public class AddNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                add();
                 finish();
                 return true;
             case R.id.archive:
@@ -135,12 +131,14 @@ public class AddNoteActivity extends AppCompatActivity {
         }
     }
 
+    // Add note when press back button to close Activity
     @Override
-    protected void onDestroy() {
+    public void onBackPressed() {
         add();
-        super.onDestroy();
+        super.onBackPressed();
     }
 
+    // Add note
     public void add() {
         inputNote = edNote.getText().toString().trim();
         if (!inputNote.equals("")) {
@@ -150,14 +148,14 @@ public class AddNoteActivity extends AppCompatActivity {
             if (noteId == -1) {
                 if (db.insertNote(note)) {
                     setToast(this, "Đã thêm").show();
-                    setResult(Activity.RESULT_OK);
+                    setResult(Activity.RESULT_OK); // Send result to refresh List<Note> in NotesFragment
                 } else {
                     setToast(this, "Lỗi! Thử lại sau.").show();
                 }
             } else {
                 if (db.updateNote(note)) {
                     setToast(this, "Đã sửa").show();
-                    setResult(Activity.RESULT_OK);
+                    setResult(Activity.RESULT_OK); // Send result to refresh List<Note> in NotesFragment
                 } else {
                     setToast(this, "Lỗi! Thử lại sau.").show();
                 }

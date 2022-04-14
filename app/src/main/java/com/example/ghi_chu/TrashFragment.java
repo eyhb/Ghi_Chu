@@ -52,5 +52,4 @@ public class TrashFragment extends Fragment {
         rvNotes.setAdapter(adapter);
         return view;
     }
-
 }
