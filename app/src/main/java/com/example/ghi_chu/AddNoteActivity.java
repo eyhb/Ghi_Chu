@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ public class AddNoteActivity extends AppCompatActivity {
     List<Label> listLabel;
     List<String> stringList;
     Note note;
-    Toolbar topToolbar, bottomToolbar;
+    Toolbar topToolbar;
     String inputNote;
     int noteId;
     String labelSelected = "";
@@ -40,7 +41,6 @@ public class AddNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
         setTopToolbar();
-        setBottomToolbar();
         setEditText();
         noteId = getIntent().getIntExtra("noteId", -1);
         note = new Note();
@@ -55,13 +55,14 @@ public class AddNoteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void setBottomToolbar() {
-        bottomToolbar = findViewById(R.id.bottomToolbar);
-    }
-
     public void setEditText() {
         edTitle = findViewById(R.id.edTitle);
         edNote = findViewById(R.id.edNote);
+        
+        // Focus to Title EditText and show keyboard
+        edTitle.requestFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     public void getListLabel() {

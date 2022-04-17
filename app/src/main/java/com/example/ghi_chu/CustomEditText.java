@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 
-// This Class to clear focus EditText when press back button while softKeyboard is shown
+// This Class to clear EditText focusing when press back button while softKeyboard is shown
 
 public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText {
     public CustomEditText(Context context) {
