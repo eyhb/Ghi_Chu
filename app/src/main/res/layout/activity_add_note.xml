@@ -65,19 +65,33 @@
                 android:singleLine="false"
                 android:textSize="20dp" />
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/tagField"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:minHeight="?attr/actionBarSize">
+
+                <Button
+                    android:id="@+id/buttonA"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
                     android:text="nhìn con cặc"
-                    android:textAlignment="center"/>
-            </RelativeLayout>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonB"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/buttonB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="nhìn con cặc"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/buttonA"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>
 
         <RelativeLayout

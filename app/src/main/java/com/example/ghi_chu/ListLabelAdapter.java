@@ -231,6 +231,6 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
 
     public void closeKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, InputMethodManager.SHOW_IMPLICIT);
     }
 }

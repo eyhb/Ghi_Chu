@@ -58,11 +58,11 @@ public class AddNoteActivity extends AppCompatActivity {
     public void setEditText() {
         edTitle = findViewById(R.id.edTitle);
         edNote = findViewById(R.id.edNote);
-        
+
         // Focus to Title EditText and show keyboard
         edTitle.requestFocus();
         InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     public void getListLabel() {
