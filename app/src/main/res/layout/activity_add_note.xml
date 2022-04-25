@@ -31,14 +31,14 @@
             android:layout_above="@id/bottomRelativeLayout"
             android:layout_below="@id/topAppBar"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:paddingHorizontal="20dp">
 
             <com.example.ghi_chu.CustomEditText
                 android:id="@+id/edTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginHorizontal="20dp"
                 android:background="@null"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -55,7 +55,6 @@
                 android:layout_height="match_parent"
                 android:layout_above="@id/tagField"
                 android:layout_below="@id/edTitle"
-                android:layout_marginHorizontal="20dp"
                 android:background="@null"
                 android:gravity="top"
                 android:hint="Ghi chú"
@@ -65,33 +64,50 @@
                 android:singleLine="false"
                 android:textSize="20dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/tagField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginHorizontal="20dp"
-                android:minHeight="?attr/actionBarSize">
+                android:minHeight="?attr/actionBarSize"
+                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/buttonA"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="nhìn con cặc"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonB"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/buttonB"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="nhìn cái lồn mẹ mày" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="nhìn cái lồn mẹ mày" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="nhìn cái lồn mẹ mày" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="nhìn con cặc"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/buttonA"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="nhìn cái lồn mẹ mày aswqeweqwdasdasdqweqweasdw" /></LinearLayout>
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
@@ -99,12 +115,18 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentBottom="true">
+
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:text="nhìn cái lồn"
-                android:textAlignment="center"/>
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="nhìn cái lồn"
+                android:textAlignment="center" />
         </RelativeLayout>
 
     </RelativeLayout>

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class AddNoteActivity extends AppCompatActivity {
     int noteId;
     String labelSelected = "";
     int labelPosition = 0;
+    LinearLayout tagField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class AddNoteActivity extends AppCompatActivity {
         noteId = getIntent().getIntExtra("noteId", -1);
         note = new Note();
         getListLabel();
+        tagField = findViewById(R.id.tagField);
     }
 
     public void setTopToolbar() {
