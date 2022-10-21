@@ -100,13 +100,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     editor.putInt("column", 2);
                     editor.apply();
                     item.setIcon(R.drawable.ic_one_column);
-                    getSupportFragmentManager().beginTransaction().detach(fragment).attach(fragment).commit();
                 } else {
                     editor.putInt("column", 1);
                     editor.apply();
                     item.setIcon(R.drawable.ic_two_column);
-                    getSupportFragmentManager().beginTransaction().detach(fragment).attach(fragment).commit();
                 }
+                getSupportFragmentManager().beginTransaction().detach(fragment).attach(fragment).commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -28,7 +28,6 @@
             android:id="@+id/mainRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bottomRelativeLayout"
             android:layout_below="@id/topAppBar"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -53,7 +52,6 @@
                 android:id="@+id/edNote"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/tagField"
                 android:layout_below="@id/edTitle"
                 android:background="@null"
                 android:gravity="top"
@@ -63,70 +61,6 @@
                 android:paddingVertical="5dp"
                 android:singleLine="false"
                 android:textSize="20dp" />
-
-            <LinearLayout
-                android:id="@+id/tagField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:minHeight="?attr/actionBarSize"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="nhìn cái lồn mẹ mày" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="nhìn cái lồn mẹ mày" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="nhìn cái lồn mẹ mày" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="nhìn cái lồn mẹ mày aswqeweqwdasdasdqweqweasdw" /></LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/bottomRelativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentBottom="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="nhìn cái lồn"
-                android:textAlignment="center" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="nhìn cái lồn"
-                android:textAlignment="center" />
         </RelativeLayout>
 
     </RelativeLayout>

@@ -47,7 +47,6 @@ public class AddNoteActivity extends AppCompatActivity {
         noteId = getIntent().getIntExtra("noteId", -1);
         note = new Note();
         getListLabel();
-        tagField = findViewById(R.id.tagField);
     }
 
     public void setTopToolbar() {

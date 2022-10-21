@@ -39,6 +39,118 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public boolean insertNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = setContentValues(note);
+        if (db.insert("notes", null, values) < 0) {
+            db.close();
+            return false;
+        } else {
+            db.close();
+            return true;
+        }
+    }
+
+    public boolean updateNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = setContentValues(note);
+        if (db.update("notes", values, "id = ?", new String[]{String.valueOf(note.getId())}) < 0) {
+            db.close();
+            return false;
+        } else {
+            db.close();
+            return true;
+        }
+    }
+
+    private ContentValues setContentValues(Note note) {
+        ContentValues values = new ContentValues();
+        values.put("title", note.getTitle());
+        values.put("note", note.getNote());
+        values.put("label", note.getLabel());
+        values.put("dateCreated", note.getDateCreated());
+        values.put("dateRemind", note.getDateRemind());
+        values.put("location", note.getLocation());
+        values.put("pinned", note.getPinned());
+        values.put("archive", note.getArchive());
+        values.put("trash", note.getTrash());
+        return values;
+    }
+
+    public boolean deleteNote(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (db.delete("notes", "id = ?", new String[]{String.valueOf(id)}) < 0) {
+            db.close();
+            return false;
+        } else {
+            db.close();
+            return true;
+        }
+    }
+
+    public List<Note> getAllNotes(int trash) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Note> list = new ArrayList<Note>();
+        Cursor cursor = db.query("notes", null, "trash = ?", new String[]{String.valueOf(trash)}, null, null, null);
+        return cursorMovement(list, cursor, trash);
+    }
+
+    private List<Note> cursorMovement(List<Note> list, Cursor cursor, int trash) {
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Note note = new Note();
+            note.setId(cursor.getInt(0));
+            note.setTitle(cursor.getString(1));
+            note.setNote(cursor.getString(2));
+            note.setLabel(cursor.getString(3));
+            note.setDateCreate(cursor.getString(4));
+            note.setDateRemind(cursor.getString(5));
+            note.setLocation(cursor.getString(6));
+            note.setPinned(cursor.getInt(7));
+            note.setArchive(cursor.getInt(8));
+            switch (trash) {
+                case -1:
+                    note.setTrash(cursor.getInt(9));
+                    break;
+                default:
+                    note.setTrash(trash);
+            }
+            list.add(note);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return list;
+    }
+
+    public List<Note> getAllNotesByLabel(String label) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Note> list = new ArrayList<Note>();
+        Cursor cursor = db.query("notes", null, "label = ?", new String[]{label}, null, null, null);
+        return cursorMovement(list, cursor, -1);
+    }
+
+    public Note getNotesById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Note note = new Note();
+        Cursor cursor = db.query("notes", null, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            note.setId(cursor.getInt(0));
+            note.setTitle(cursor.getString(1));
+            note.setNote(cursor.getString(2));
+            note.setLabel(cursor.getString(3));
+            note.setDateCreate(cursor.getString(4));
+            note.setDateRemind(cursor.getString(5));
+            note.setLocation(cursor.getString(6));
+            note.setPinned(cursor.getInt(7));
+            note.setArchive(cursor.getInt(8));
+            note.setTrash(cursor.getInt(9));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return note;
+    }
+
     public boolean insertLable(Label label) {
         SQLiteDatabase db = this.getWritableDatabase();
         List<Label> labelList = getAllLabels();
@@ -63,23 +175,6 @@ public class DBHelper extends SQLiteOpenHelper {
         } else {
             db.close();
             return false;
-        }
-    }
-
-    public boolean insertNote(Note note) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("title", note.getTitle());
-        values.put("note", note.getNote());
-        values.put("label", note.getLabel());
-        values.put("dateTime", note.getDateTime());
-        values.put("trash", 0);
-        if (db.insert("notes", null, values) < 0) {
-            db.close();
-            return false;
-        } else {
-            db.close();
-            return true;
         }
     }
 
@@ -116,23 +211,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateNote(Note note) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("title", note.getTitle());
-        values.put("note", note.getNote());
-        values.put("label", note.getLabel());
-        values.put("dateTime", note.getDateTime());
-        values.put("trash", note.getTrash());
-        if (db.update("notes", values, "id = ?", new String[]{String.valueOf(note.getId())}) < 0) {
-            db.close();
-            return false;
-        } else {
-            db.close();
-            return true;
-        }
-    }
-
     public boolean deleteLabel(String label) {
         SQLiteDatabase db = this.getWritableDatabase();
         List<Note> list = getAllNotesByLabel(label);
@@ -144,17 +222,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 note.setLabel("");
                 updateNote(note);
             }
-            db.close();
-            return true;
-        }
-    }
-
-    public boolean deleteNote(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        if (db.delete("notes", "id = ?", new String[]{String.valueOf(id)}) < 0) {
-            db.close();
-            return false;
-        } else {
             db.close();
             return true;
         }
@@ -174,63 +241,5 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return list;
-    }
-
-    public List<Note> getAllNotes(int trash) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<Note> list = new ArrayList<Note>();
-        Cursor cursor = db.query("notes", null, "trash = ?", new String[]{String.valueOf(trash)}, null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Note note = new Note();
-            note.setId(cursor.getInt(0));
-            note.setTitle(cursor.getString(1));
-            note.setNote(cursor.getString(2));
-            note.setLabel(cursor.getString(3));
-            note.setDateTime(cursor.getString(4));
-            note.setTrash(trash);
-            list.add(note);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return list;
-    }
-
-    public List<Note> getAllNotesByLabel(String label) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<Note> list = new ArrayList<Note>();
-        Cursor cursor = db.query("notes", null, "label = ?", new String[]{label}, null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Note note = new Note();
-            note.setId(cursor.getInt(0));
-            note.setTitle(cursor.getString(1));
-            note.setNote(cursor.getString(2));
-            note.setLabel(cursor.getString(3));
-            note.setDateTime(cursor.getString(4));
-            note.setTrash(cursor.getInt(5));
-            list.add(note);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return list;
-    }
-
-    public Note getNotesById(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Note note = new Note();
-        Cursor cursor = db.query("notes", null, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            note.setId(cursor.getInt(0));
-            note.setTitle(cursor.getString(1));
-            note.setNote(cursor.getString(2));
-            note.setLabel(cursor.getString(3));
-            note.setDateTime(cursor.getString(4));
-            note.setTrash(cursor.getInt(5));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return note;
     }
 }
