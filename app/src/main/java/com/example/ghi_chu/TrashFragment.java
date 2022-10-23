@@ -42,7 +42,7 @@ public class TrashFragment extends Fragment {
         rvNotes = view.findViewById(R.id.rvNotes);
         list = new ArrayList<Note>();
         db = new DBHelper(getContext());
-        list = db.getAllNotes(1);
+        list = db.getAllNotes(true);
         layoutManager = new StaggeredGridLayoutManager(
                 this.getActivity().getSharedPreferences("VIEW", MODE_PRIVATE).getInt("column", 1),
                 StaggeredGridLayoutManager.VERTICAL);

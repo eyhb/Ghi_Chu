@@ -41,7 +41,7 @@ public class NotesFragment extends Fragment {
         rvNotes = view.findViewById(R.id.rvNotes);
         list = new ArrayList<Note>();
         db = new DBHelper(getContext());
-        list = db.getAllNotes(0);
+        list = db.getAllNotes(false);
         layoutManager = new StaggeredGridLayoutManager(
                 this.getActivity().getSharedPreferences("VIEW", MODE_PRIVATE).getInt("column", 1),
                 StaggeredGridLayoutManager.VERTICAL);

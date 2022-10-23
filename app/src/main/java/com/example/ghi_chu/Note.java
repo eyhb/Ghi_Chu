@@ -1,16 +1,17 @@
 package com.example.ghi_chu;
 
 public class Note {
-    int id, pinned, archive, trash;
+    Integer id;
+    Boolean pinned, archive, trash;
     String title, note, label, dateCreated, dateRemind, location;
 
     public Note() {
     }
 
-    public Note(int id,
-                int pinned,
-                int archive,
-                int trash,
+    public Note(Integer id,
+                Boolean pinned,
+                Boolean archive,
+                Boolean trash,
                 String title,
                 String note,
                 String label,
@@ -37,27 +38,27 @@ public class Note {
         this.id = id;
     }
 
-    public int getPinned() {
+    public boolean getPinned() {
         return pinned;
     }
 
-    public void setPinned(int pinned) {
+    public void setPinned(boolean pinned) {
         this.pinned = pinned;
     }
 
-    public int getArchive() {
+    public boolean getArchive() {
         return archive;
     }
 
-    public void setArchive(int archive) {
+    public void setArchive(boolean archive) {
         this.archive = archive;
     }
 
-    public int getTrash() {
+    public boolean getTrash() {
         return trash;
     }
 
-    public void setTrash(int trash) {
+    public void setTrash(boolean trash) {
         this.trash = trash;
     }
 

@@ -29,7 +29,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "pinned BOOLEAN," +
                 "archive BOOLEAN," +
                 "trash BOOLEAN)");
-        db.execSQL("CREATE TABLE labels (id INTEGER PRIMARY KEY AUTOINCREMENT, label TEXT)");
+        db.execSQL("CREATE TABLE labels (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "label TEXT)");
     }
 
     @Override
@@ -88,14 +89,26 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Note> getAllNotes(int trash) {
+    public List<Note> getAllNotes(boolean trash) {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<Note> list = new ArrayList<Note>();
         Cursor cursor = db.query("notes", null, "trash = ?", new String[]{String.valueOf(trash)}, null, null, null);
-        return cursorMovement(list, cursor, trash);
+        return getList(cursor);
     }
 
-    private List<Note> cursorMovement(List<Note> list, Cursor cursor, int trash) {
+    public List<Note> getAllNotesByLabel(String label) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("notes", null, "label = ?", new String[]{label}, null, null, null);
+        return getList(cursor);
+    }
+
+    public Note getNotesById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("notes", null, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
+        return getList(cursor).get(0);
+    }
+
+    private List<Note> getList(Cursor cursor) {
+        List<Note> list = new ArrayList<Note>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Note note = new Note();
@@ -106,49 +119,14 @@ public class DBHelper extends SQLiteOpenHelper {
             note.setDateCreate(cursor.getString(4));
             note.setDateRemind(cursor.getString(5));
             note.setLocation(cursor.getString(6));
-            note.setPinned(cursor.getInt(7));
-            note.setArchive(cursor.getInt(8));
-            switch (trash) {
-                case -1:
-                    note.setTrash(cursor.getInt(9));
-                    break;
-                default:
-                    note.setTrash(trash);
-            }
+            note.setPinned(Boolean.parseBoolean(String.valueOf(cursor.getInt(7))));
+            note.setArchive(Boolean.parseBoolean(String.valueOf(cursor.getInt(8))));
+            note.setTrash(Boolean.parseBoolean(String.valueOf(cursor.getInt(9))));
             list.add(note);
             cursor.moveToNext();
         }
         cursor.close();
         return list;
-    }
-
-    public List<Note> getAllNotesByLabel(String label) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<Note> list = new ArrayList<Note>();
-        Cursor cursor = db.query("notes", null, "label = ?", new String[]{label}, null, null, null);
-        return cursorMovement(list, cursor, -1);
-    }
-
-    public Note getNotesById(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Note note = new Note();
-        Cursor cursor = db.query("notes", null, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            note.setId(cursor.getInt(0));
-            note.setTitle(cursor.getString(1));
-            note.setNote(cursor.getString(2));
-            note.setLabel(cursor.getString(3));
-            note.setDateCreate(cursor.getString(4));
-            note.setDateRemind(cursor.getString(5));
-            note.setLocation(cursor.getString(6));
-            note.setPinned(cursor.getInt(7));
-            note.setArchive(cursor.getInt(8));
-            note.setTrash(cursor.getInt(9));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return note;
     }
 
     public boolean insertLable(Label label) {

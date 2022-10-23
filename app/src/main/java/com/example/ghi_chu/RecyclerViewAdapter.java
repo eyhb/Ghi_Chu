@@ -63,7 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (list.get(p).getTrash() == 0) {
+                if (!list.get(p).getTrash()) {
                     Intent intent = new Intent(context, AddNoteActivity.class);
                     intent.putExtra("noteId", list.get(p).getId());
                     ((Activity) context).startActivityForResult(intent, 10001);
@@ -73,13 +73,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (list.get(p).getTrash() == 1) {
+                if (list.get(p).getTrash()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Khôi phục?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            list.get(p).setTrash(0);
+                            list.get(p).setTrash(false);
                             if (db.updateNote(list.get(p))) {
                                 list.remove(p);
                                 notifyDataSetChanged();
@@ -110,12 +110,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                if (list.get(p).getTrash() == 0) {
+                if (!list.get(p).getTrash()) {
                     builder.setTitle("Chuyển vào thùng rác?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            list.get(p).setTrash(1);
+                            list.get(p).setTrash(true);
                             if (db.updateNote(list.get(p))) {
                                 list.remove(p);
                                 notifyDataSetChanged();
