@@ -3,6 +3,7 @@ package com.example.ghi_chu;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Context;
@@ -32,7 +33,7 @@ public class AddNoteActivity extends AppCompatActivity {
     List<String> stringList;
     Note note;
     Toolbar topToolbar;
-    String inputNote;
+    String inputTitle, inputNote;
     int noteId;
     String labelSelected = "";
     int labelPosition = 0;
@@ -43,10 +44,14 @@ public class AddNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
         setTopToolbar();
-        setEditText();
         noteId = getIntent().getIntExtra("noteId", -1);
         note = new Note();
-        getListLabel();
+        db = new DBHelper(this);
+        if (noteId != -1) {
+            note = db.getNotesById(noteId);
+        }
+        setEditText();
+//        getListLabel();
     }
 
     public void setTopToolbar() {
@@ -60,6 +65,10 @@ public class AddNoteActivity extends AppCompatActivity {
     public void setEditText() {
         edTitle = findViewById(R.id.edTitle);
         edNote = findViewById(R.id.edNote);
+        if (noteId != -1) {
+            edTitle.setText(note.getTitle());
+            edNote.setText(note.getNote());
+        }
 
         // Focus to Title EditText and show keyboard
         edTitle.requestFocus();
@@ -77,10 +86,9 @@ public class AddNoteActivity extends AppCompatActivity {
             stringList.add(label.getLabel());
         if (noteId != -1) {
             note = db.getNotesById(noteId);
-            labelSelected = note.getLabel();
             edTitle.setText(note.getTitle());
             edNote.setText(note.getNote());
-            if (!labelSelected.equals("")) {
+            if (!note.getLabel().equals("") && note.getLabel() != null) {
                 for (Label label : listLabel) {
                     labelPosition++;
                     if (labelSelected.equals(label.getLabel())) {
@@ -96,6 +104,20 @@ public class AddNoteActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.add_note_menu, menu);
+        if (noteId != -1) {
+            db = new DBHelper(this);
+            note = db.getNotesById(noteId);
+            if (note.getPinned() == 1) {
+                menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_pinned));
+            }
+            if (note.getArchive() == 1) {
+                menu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_unarchive));
+            }
+        } else {
+            note.setPinned(0);
+            note.setArchive(0);
+            note.setTrash(0);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -107,13 +129,29 @@ public class AddNoteActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.archive:
-                setToast(this, "Đã lưu").show();
+                    if (note.getArchive() == 0 || note.getArchive() == null) {
+                        note.setArchive(1);
+                        item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_unarchive));
+                        setToast(this, "Đã lưu").show();
+                    } else {
+                        note.setArchive(0);
+                        item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_archive));
+                        setToast(this, "Đã bỏ lưu").show();
+                    }
                 return true;
             case R.id.reminder:
                 setToast(this, "Thông báo").show();
                 return true;
             case R.id.pin:
-                setToast(this, "Đã gim").show();
+                if (note.getPinned() == 0 || note.getPinned() == null) {
+                    note.setPinned(1);
+                    item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_pinned));
+                    setToast(this, "Đã gim").show();
+                } else {
+                    note.setPinned(0);
+                    item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_pin));
+                    setToast(this, "Đã bỏ gim").show();
+                }
                 return true;
             case R.id.addLabel:
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddNoteActivity.this, R.style.Theme_AppCompat);
@@ -141,14 +179,21 @@ public class AddNoteActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    // Add note
+    // Add note to database
     public void add() {
+        inputTitle = edTitle.getText().toString().trim();
         inputNote = edNote.getText().toString().trim();
-        if (!inputNote.equals("")) {
-            note.setTitle(edTitle.getText().toString().trim());
+
+        // Check the note is empty or not
+        if (!(inputTitle.equals("") && inputNote.equals(""))) {
+            note.setTitle(inputTitle);
             note.setNote(inputNote);
-            note.setLabel(labelSelected);
+            note.setLabel("");
+
+            // Check the existence of note
             if (noteId == -1) {
+
+                // Insert new note
                 if (db.insertNote(note)) {
                     setToast(this, "Đã thêm").show();
                     setResult(Activity.RESULT_OK); // Send result to refresh List<Note> in NotesFragment
@@ -156,6 +201,8 @@ public class AddNoteActivity extends AppCompatActivity {
                     setToast(this, "Lỗi! Thử lại sau.").show();
                 }
             } else {
+
+                // Update note
                 if (db.updateNote(note)) {
                     setToast(this, "Đã sửa").show();
                     setResult(Activity.RESULT_OK); // Send result to refresh List<Note> in NotesFragment

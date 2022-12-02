@@ -26,9 +26,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 "dateCreated TEXT," +
                 "dateRemind TEXT," +
                 "location TEXT," +
-                "pinned BOOLEAN," +
-                "archive BOOLEAN," +
-                "trash BOOLEAN)");
+                "pinned INTEGER," +
+                "archive INTEGER," +
+                "trash INTEGER)");
         db.execSQL("CREATE TABLE labels (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "label TEXT)");
     }
@@ -89,25 +89,25 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Note> getAllNotes(boolean trash) {
+    public List<Note> getAllNotes(Boolean trash) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query("notes", null, "trash = ?", new String[]{String.valueOf(trash)}, null, null, null);
-        return getList(cursor);
+        Cursor cursor = db.query("notes", null, "trash = ?", new String[]{String.valueOf((trash) ? 1 : 0)}, null, null, null);
+        return getListNote(cursor);
     }
 
     public List<Note> getAllNotesByLabel(String label) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query("notes", null, "label = ?", new String[]{label}, null, null, null);
-        return getList(cursor);
+        return getListNote(cursor);
     }
 
     public Note getNotesById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query("notes", null, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
-        return getList(cursor).get(0);
+        return getListNote(cursor).get(0);
     }
 
-    private List<Note> getList(Cursor cursor) {
+    private List<Note> getListNote(Cursor cursor) {
         List<Note> list = new ArrayList<Note>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -119,9 +119,9 @@ public class DBHelper extends SQLiteOpenHelper {
             note.setDateCreate(cursor.getString(4));
             note.setDateRemind(cursor.getString(5));
             note.setLocation(cursor.getString(6));
-            note.setPinned(Boolean.parseBoolean(String.valueOf(cursor.getInt(7))));
-            note.setArchive(Boolean.parseBoolean(String.valueOf(cursor.getInt(8))));
-            note.setTrash(Boolean.parseBoolean(String.valueOf(cursor.getInt(9))));
+            note.setPinned(cursor.getInt(7));
+            note.setArchive(cursor.getInt(8));
+            note.setTrash(cursor.getInt(9));
             list.add(note);
             cursor.moveToNext();
         }
@@ -129,18 +129,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public boolean insertLable(Label label) {
+    public boolean insertLabel(Label label) {
         SQLiteDatabase db = this.getWritableDatabase();
         List<Label> labelList = getAllLabels();
-        String lb = label.getLabel();
-        boolean check = true;
-        for (Label labelLoop : labelList) {
-            if (lb.equals(labelLoop.getLabel())) {
-                check = false;
-                break;
-            }
-        }
-        if (check) {
+        if (checkLabel(label, labelList)) {
             ContentValues values = new ContentValues();
             values.put("label", label.getLabel());
             if (db.insert("labels", null, values) < 0) {
@@ -159,15 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean updateLabel(Label label, String oldLabel) {
         SQLiteDatabase db = this.getWritableDatabase();
         List<Label> labelList = getAllLabels();
-        String lb = label.getLabel();
-        boolean check = true;
-        for (Label labelLoop : labelList) {
-            if (lb.equals(labelLoop.getLabel())) {
-                check = false;
-                break;
-            }
-        }
-        if (check) {
+        if (checkLabel(label, labelList)) {
             ContentValues values = new ContentValues();
             List<Note> noteList = getAllNotesByLabel(oldLabel);
             values.put("id", label.getId());
@@ -176,10 +160,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.close();
                 return false;
             } else {
-                for (Note note : noteList) {
-                    note.setLabel(label.getLabel());
-                    updateNote(note);
-                }
+                // Update all label exist in all note
+                updateLabelInAllNote(noteList, label.getLabel());
                 db.close();
                 return true;
             }
@@ -196,13 +178,31 @@ public class DBHelper extends SQLiteOpenHelper {
             db.close();
             return false;
         } else {
-            for (Note note : list) {
-                note.setLabel("");
-                updateNote(note);
-            }
+            // Delete all label exist in all note
+            updateLabelInAllNote(list, "");
             db.close();
             return true;
         }
+    }
+
+    private void updateLabelInAllNote(List<Note> noteList, String label) {
+        for (Note note : noteList) {
+            note.setLabel(label);
+            updateNote(note);
+        }
+    }
+
+    // Check if label exists or not
+    private boolean checkLabel(Label label, List<Label> labelList) {
+        String lb = label.getLabel();
+        boolean check = true;
+        for (Label labelLoop : labelList) {
+            if (lb.equals(labelLoop.getLabel())) {
+                check = false;
+                break;
+            }
+        }
+        return check;
     }
 
     public List<Label> getAllLabels() {

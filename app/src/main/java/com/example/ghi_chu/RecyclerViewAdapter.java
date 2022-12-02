@@ -46,121 +46,98 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         int p = position;
         title = list.get(p).getTitle();
         label = list.get(p).getLabel();
+
+        // Set title view
         if (!title.equals("")) {
             holder.tvTitle.setVisibility(View.VISIBLE);
             holder.tvTitle.setText(list.get(p).getTitle());
         } else {
             holder.tvTitle.setVisibility(View.GONE);
         }
+
+        // Set note view
         holder.tvNote.setText(list.get(p).getNote());
-        if (!label.equals("")) {
+
+        // Set label view
+        if (label != null && !label.equals("")) {
             holder.cvLabel.setVisibility(View.VISIBLE);
             holder.tvLabel.setText(list.get(p).getLabel());
         } else {
             holder.cvLabel.setVisibility(View.GONE);
         }
+
         holder.layout.requestLayout();
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!list.get(p).getTrash()) {
-                    Intent intent = new Intent(context, AddNoteActivity.class);
-                    intent.putExtra("noteId", list.get(p).getId());
-                    ((Activity) context).startActivityForResult(intent, 10001);
-                }
+        holder.layout.setOnClickListener(v -> {
+            if (list.get(p).getTrash() == 0) {
+                Intent intent = new Intent(context, AddNoteActivity.class);
+                intent.putExtra("noteId", list.get(p).getId());
+                ((Activity) context).startActivityForResult(intent, 10001);
             }
         });
-        holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (list.get(p).getTrash()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Khôi phục?");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            list.get(p).setTrash(false);
-                            if (db.updateNote(list.get(p))) {
-                                list.remove(p);
-                                notifyDataSetChanged();
-                                Toast toast = Toast.makeText(context, "Đã khôi phục", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
-                            } else {
-                                Toast toast = Toast.makeText(context, "Lỗi", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
-                            }
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-                return false;
-            }
-        });
-        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.layout.setOnLongClickListener(v -> {
+            if (list.get(p).getTrash() == 1) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                if (!list.get(p).getTrash()) {
-                    builder.setTitle("Chuyển vào thùng rác?");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            list.get(p).setTrash(true);
-                            if (db.updateNote(list.get(p))) {
-                                list.remove(p);
-                                notifyDataSetChanged();
-                                Toast toast = Toast.makeText(context, "Đã chuyển vào thùng rác", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
-                                dialog.dismiss();
-                            } else {
-                                Toast toast = Toast.makeText(context, "Lỗi", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
-                                dialog.dismiss();
-                            }
-                        }
-                    });
-                } else {
-                    builder.setTitle("Xác nhận xóa");
-                    builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (db.deleteNote(list.get(p).getId())) {
-                                list.remove(p);
-                                notifyDataSetChanged();
-                                Toast toast = Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
-                                dialog.dismiss();
-                            } else {
-                                Toast toast = Toast.makeText(context, "Lỗi", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
-                                dialog.dismiss();
-                            }
-                        }
-                    });
-                }
-                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                builder.setTitle("Khôi phục?");
+                builder.setPositiveButton("OK", (dialog, which) -> {
+                    list.get(p).setTrash(0);
+                    if (db.updateNote(list.get(p))) {
+                        list.remove(p);
+                        notifyDataSetChanged();
+                        Toast toast = Toast.makeText(context, "Đã khôi phục", Toast.LENGTH_SHORT);
+                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(context, "Lỗi", Toast.LENGTH_SHORT);
+                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                        toast.show();
                     }
+                    dialog.dismiss();
                 });
+                builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
+            return false;
+        });
+        holder.imgDelete.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            if (list.get(p).getTrash() == 0) {
+                builder.setTitle("Chuyển vào thùng rác?");
+                builder.setPositiveButton("OK", (dialog, which) -> {
+                    list.get(p).setTrash(1);
+                    if (db.updateNote(list.get(p))) {
+                        list.remove(p);
+                        notifyDataSetChanged();
+                        Toast toast = Toast.makeText(context, "Đã chuyển vào thùng rác", Toast.LENGTH_SHORT);
+                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(context, "Lỗi", Toast.LENGTH_SHORT);
+                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                        toast.show();
+                    }
+                    dialog.dismiss();
+                });
+            } else {
+                builder.setTitle("Xác nhận xóa");
+                builder.setPositiveButton("Xóa", (dialog, which) -> {
+                    if (db.deleteNote(list.get(p).getId())) {
+                        list.remove(p);
+                        notifyDataSetChanged();
+                        Toast toast = Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT);
+                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(context, "Lỗi", Toast.LENGTH_SHORT);
+                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+                        toast.show();
+                    }
+                    dialog.dismiss();
+                });
+            }
+            builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
     }
 

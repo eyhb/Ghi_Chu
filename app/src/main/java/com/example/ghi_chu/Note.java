@@ -1,17 +1,16 @@
 package com.example.ghi_chu;
 
 public class Note {
-    Integer id;
-    Boolean pinned, archive, trash;
+    Integer id, pinned, archive, trash;
     String title, note, label, dateCreated, dateRemind, location;
 
     public Note() {
     }
 
     public Note(Integer id,
-                Boolean pinned,
-                Boolean archive,
-                Boolean trash,
+                Integer pinned,
+                Integer archive,
+                Integer trash,
                 String title,
                 String note,
                 String label,
@@ -38,27 +37,27 @@ public class Note {
         this.id = id;
     }
 
-    public boolean getPinned() {
+    public Integer getPinned() {
         return pinned;
     }
 
-    public void setPinned(boolean pinned) {
+    public void setPinned(Integer pinned) {
         this.pinned = pinned;
     }
 
-    public boolean getArchive() {
+    public Integer getArchive() {
         return archive;
     }
 
-    public void setArchive(boolean archive) {
+    public void setArchive(Integer archive) {
         this.archive = archive;
     }
 
-    public boolean getTrash() {
+    public Integer getTrash() {
         return trash;
     }
 
-    public void setTrash(boolean trash) {
+    public void setTrash(Integer trash) {
         this.trash = trash;
     }
 
@@ -90,7 +89,7 @@ public class Note {
         return dateCreated;
     }
 
-    public void setDateCreate(String dateTime) {
+    public void setDateCreate(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 

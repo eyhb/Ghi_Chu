@@ -66,6 +66,7 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
             holder = (ViewHolder) convertView.getTag();
         }
         if (position == 0) {
+            // Set top view of the list
             holder.imgLabel.setImageResource(R.drawable.ic_add);
             holder.imgLabel.setOnClickListener(v -> {
 //                    showKeyboard();
@@ -87,17 +88,13 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
                         if (!edLabel.equals("")) {
                             Label label = new Label();
                             label.setLabel(edLabel);
-                            if (db.insertLable(label)) {
+                            if (db.insertLabel(label)) {
                                 list.add(1, label);
                                 notifyDataSetChanged();
-                                Toast toast = Toast.makeText(getContext(), "Đã thêm", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
+                                showToast(getContext(), "Đã thêm");
                                 context.setResult(Activity.RESULT_OK);
                             } else {
-                                Toast toast = Toast.makeText(getContext(), "Nhãn đã có", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
+                                showToast(getContext(), "Nhãn đã có");
                             }
                         }
                         holder.edLabel.setText("");
@@ -115,24 +112,20 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
                 }
             });
         } else {
-            final String[] label = {list.get(position).getLabel()};
-            holder.edLabel.setText(label[0]);
+            final String[] labelFocus = {list.get(position).getLabel()};
+            holder.edLabel.setText(labelFocus[0]);
             holder.imgDelete.setOnClickListener(v -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Xóa nhãn?");
                 builder.setPositiveButton("OK", (dialog, which) -> {
-                    if (db.deleteLabel(label[0])) {
+                    if (db.deleteLabel(labelFocus[0])) {
                         list.remove(position);
                         notifyDataSetChanged();
-                        Toast toast = Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT);
-                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.DKGRAY);
-                        toast.show();
+                        showToast(context, "Đã xóa");
                         dialog.dismiss();
                         context.setResult(Activity.RESULT_OK);
                     } else {
-                        Toast toast = Toast.makeText(context, "Lỗi! Thử lại sau.", Toast.LENGTH_SHORT);
-                        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                        toast.show();
+                        showToast(context, "Lỗi! Thử lại sau.");
                         dialog.dismiss();
                     }
                 });
@@ -167,25 +160,19 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
                     });
                 } else {
                     if (!holder.edLabel.getText().toString().trim().equals("")) {
-                        if (!label[0].equals(list.get(position).getLabel())) {
-                            if (db.updateLabel(list.get(position), label[0])) {
-                                label[0] = list.get(position).getLabel();
-                                Toast toast = Toast.makeText(getContext(), "Đã sửa", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
+                        if (!labelFocus[0].equals(list.get(position).getLabel())) {
+                            if (db.updateLabel(list.get(position), labelFocus[0])) {
+                                labelFocus[0] = list.get(position).getLabel();
+                                showToast(getContext(), "Đã sửa");
                                 context.setResult(Activity.RESULT_OK);
                             } else {
-                                Toast toast = Toast.makeText(getContext(), "Nhãn đã có", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
-                                holder.edLabel.setText(label[0]);
+                                showToast(getContext(), "Nhãn đã có");
+                                holder.edLabel.setText(labelFocus[0]);
                             }
-                        } else {
-                            holder.edLabel.setText(label[0]);
                         }
                     } else {
-                        list.get(position).setLabel(label[0]);
-                        holder.edLabel.setText(label[0]);
+                        list.get(position).setLabel(labelFocus[0]);
+                        holder.edLabel.setText(labelFocus[0]);
                     }
                     holder.imgDelete.setImageResource(R.drawable.ic_trash);
                     holder.imgDelete.setColorFilter(context.getResources().getColor(R.color.icon), PorterDuff.Mode.SRC_ATOP);
@@ -193,18 +180,14 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("Xóa nhãn?");
                         builder.setPositiveButton("OK", (dialog, which) -> {
-                            if (db.deleteLabel(label[0])) {
+                            if (db.deleteLabel(labelFocus[0])) {
                                 list.remove(position);
                                 notifyDataSetChanged();
-                                Toast toast = Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
+                                showToast(context, "Đã xóa");
                                 dialog.dismiss();
                                 context.setResult(Activity.RESULT_OK);
                             } else {
-                                Toast toast = Toast.makeText(context, "Lỗi! Thử lại sau.", Toast.LENGTH_SHORT);
-                                toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
-                                toast.show();
+                                showToast(context, "Lỗi! Thử lại sau.");
                                 dialog.dismiss();
                             }
                         });
@@ -216,6 +199,12 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
             });
         }
         return convertView;
+    }
+
+    private void showToast(Context context, String text) {
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+        toast.show();
     }
 
     class ViewHolder {
