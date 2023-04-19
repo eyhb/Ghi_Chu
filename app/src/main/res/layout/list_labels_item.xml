@@ -10,7 +10,6 @@
         android:id="@+id/imgLabel"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_alignParentStart="true"
         android:padding="15dp"
         android:src="@drawable/ic_label_outline" />
 
@@ -18,12 +17,13 @@
         android:id="@+id/edLabel"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_toEndOf="@id/imgLabel"
-        android:layout_toStartOf="@id/imgDelete"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/imgDelete"
+        android:layout_toRightOf="@id/imgLabel"
         android:background="@null"
         android:inputType="text|textNoSuggestions"
         android:paddingHorizontal="20dp" />
-<!--    <requestFocus/>-->
+    <requestFocus/>
 
     <ImageView
         android:id="@+id/imgDelete"

@@ -220,22 +220,4 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
-
-    public Label getLabelByLabel(String label) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Label lb;
-        List<Label> list = new ArrayList<Label>();
-        Cursor cursor = db.query("labels", null, "label = ?", new String[]{label}, null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Label l = new Label();
-            l.setId(cursor.getInt(0));
-            l.setLabel(cursor.getString(1));
-            list.add(l);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        lb = list.get(0);
-        return lb;
-    }
 }
