@@ -43,45 +43,44 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
-        int p = position;
-        title = list.get(p).getTitle();
-        label = list.get(p).getLabel();
+        title = list.get(position).getTitle();
+        label = list.get(position).getLabel();
 
         // Set title view
         if (!title.equals("")) {
             holder.tvTitle.setVisibility(View.VISIBLE);
-            holder.tvTitle.setText(list.get(p).getTitle());
+            holder.tvTitle.setText(list.get(position).getTitle());
         } else {
             holder.tvTitle.setVisibility(View.GONE);
         }
 
         // Set note view
-        holder.tvNote.setText(list.get(p).getNote());
+        holder.tvNote.setText(list.get(position).getNote());
 
         // Set label view
         if (label != null && !label.equals("")) {
             holder.cvLabel.setVisibility(View.VISIBLE);
-            holder.tvLabel.setText(list.get(p).getLabel());
+            holder.tvLabel.setText(list.get(position).getLabel());
         } else {
             holder.cvLabel.setVisibility(View.GONE);
         }
 
         holder.layout.requestLayout();
         holder.layout.setOnClickListener(v -> {
-            if (list.get(p).getTrash() == 0) {
+            if (list.get(position).getTrash() == 0) {
                 Intent intent = new Intent(context, AddNoteActivity.class);
-                intent.putExtra("noteId", list.get(p).getId());
+                intent.putExtra("noteId", list.get(position).getId());
                 ((Activity) context).startActivityForResult(intent, 10001);
             }
         });
         holder.layout.setOnLongClickListener(v -> {
-            if (list.get(p).getTrash() == 1) {
+            if (list.get(position).getTrash() == 1) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Khôi phục?");
                 builder.setPositiveButton("OK", (dialog, which) -> {
-                    list.get(p).setTrash(0);
-                    if (db.updateNote(list.get(p))) {
-                        list.remove(p);
+                    list.get(position).setTrash(0);
+                    if (db.updateNote(list.get(position))) {
+                        list.remove(position);
                         notifyDataSetChanged();
                         Toast toast = Toast.makeText(context, "Đã khôi phục", Toast.LENGTH_SHORT);
                         toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
@@ -101,12 +100,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         });
         holder.imgDelete.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            if (list.get(p).getTrash() == 0) {
+            if (list.get(position).getTrash() == 0) {
                 builder.setTitle("Chuyển vào thùng rác?");
                 builder.setPositiveButton("OK", (dialog, which) -> {
-                    list.get(p).setTrash(1);
-                    if (db.updateNote(list.get(p))) {
-                        list.remove(p);
+                    list.get(position).setTrash(1);
+                    if (db.updateNote(list.get(position))) {
+                        list.remove(position);
                         notifyDataSetChanged();
                         Toast toast = Toast.makeText(context, "Đã chuyển vào thùng rác", Toast.LENGTH_SHORT);
                         toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
@@ -121,8 +120,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             } else {
                 builder.setTitle("Xác nhận xóa");
                 builder.setPositiveButton("Xóa", (dialog, which) -> {
-                    if (db.deleteNote(list.get(p).getId())) {
-                        list.remove(p);
+                    if (db.deleteNote(list.get(position).getId())) {
+                        list.remove(position);
                         notifyDataSetChanged();
                         Toast toast = Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT);
                         toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);

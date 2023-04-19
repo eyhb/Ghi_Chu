@@ -12,12 +12,13 @@
         <activity
             android:name="com.example.ghi_chu.AddLabelActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.example.ghi_chu.AddNoteActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name="com.example.ghi_chu.LabelActivity" />
-        <activity android:name="com.example.ghi_chu.MainActivity">
+        <activity android:name="com.example.ghi_chu.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
