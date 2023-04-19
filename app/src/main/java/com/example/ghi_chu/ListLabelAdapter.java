@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -56,8 +57,8 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
         final ViewHolder holder;
         if (convertView == null) {
             inflater = context.getLayoutInflater();
-            holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.list_labels_item, null, true);
+            holder = new ViewHolder();
             holder.edLabel = convertView.findViewById(R.id.edLabel);
             holder.imgLabel = convertView.findViewById(R.id.imgLabel);
             holder.imgDelete = convertView.findViewById(R.id.imgDelete);
@@ -66,10 +67,11 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
             holder = (ViewHolder) convertView.getTag();
         }
         if (position == 0) {
+
             // Set top view of the list
             holder.imgLabel.setImageResource(R.drawable.ic_add);
             holder.imgLabel.setOnClickListener(v -> {
-//                    showKeyboard();
+                showKeyboard();
                 holder.edLabel.requestFocus();
             });
             holder.edLabel.setHint("Tạo nhãn mới");
@@ -78,6 +80,7 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
                 if (hasFocus) {
                     holder.imgLabel.setImageResource(R.drawable.ic_cancel);
                     holder.imgLabel.setOnClickListener(v1 -> {
+                        holder.edLabel.setText("");
                         holder.edLabel.clearFocus();
                         closeKeyboard();
                     });
@@ -89,12 +92,13 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
                             Label label = new Label();
                             label.setLabel(edLabel);
                             if (db.insertLabel(label)) {
+                                label.setId(db.getLabelByLabel(edLabel).getId());
                                 list.add(1, label);
                                 notifyDataSetChanged();
-                                showToast(getContext(), "Đã thêm");
+                                showToast(getContext(), "Đã thêm " + label.getLabel() + " " + label.getId());
                                 context.setResult(Activity.RESULT_OK);
                             } else {
-                                showToast(getContext(), "Nhãn đã có");
+                                showToast(getContext(), "Nhãn đã có " + label.getLabel() + " " + label.getId());
                             }
                         }
                         holder.edLabel.setText("");
@@ -104,11 +108,12 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
                 } else {
                     holder.imgLabel.setImageResource(R.drawable.ic_add);
                     holder.imgLabel.setOnClickListener(v13 -> {
-//                                showKeyboard();
+                        showKeyboard();
                         holder.edLabel.requestFocus();
                     });
                     holder.edLabel.setHint("Tạo nhãn mới");
                     holder.imgDelete.setVisibility(View.INVISIBLE);
+                    closeKeyboard();
                 }
             });
         } else {
@@ -163,10 +168,11 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
                         if (!labelFocus[0].equals(list.get(position).getLabel())) {
                             if (db.updateLabel(list.get(position), labelFocus[0])) {
                                 labelFocus[0] = list.get(position).getLabel();
-                                showToast(getContext(), "Đã sửa");
+                                showToast(getContext(), "Đã sửa " + list.get(position).getLabel() + " " + list.get(position).getId());
+                                notifyDataSetChanged();
                                 context.setResult(Activity.RESULT_OK);
                             } else {
-                                showToast(getContext(), "Nhãn đã có");
+                                showToast(getContext(), "Nhãn đã có " + list.get(position).getLabel() + " " + list.get(position).getId());
                                 holder.edLabel.setText(labelFocus[0]);
                             }
                         }
@@ -203,7 +209,10 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
 
     private void showToast(Context context, String text) {
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-        toast.getView().findViewById(android.R.id.message).setBackgroundColor(Color.TRANSPARENT);
+        View view = toast.getView();
+        TextView textView = view.findViewById(android.R.id.message);
+        textView.setBackgroundColor(Color.TRANSPARENT);
+        textView.setTextColor(Color.DKGRAY);
         toast.show();
     }
 
@@ -213,13 +222,13 @@ public class ListLabelAdapter extends ArrayAdapter<Label> {
         ImageView imgDelete;
     }
 
-//    public void showKeyboard() {
-//        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-//    }
+    public void showKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
 
     public void closeKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, InputMethodManager.SHOW_IMPLICIT);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 }

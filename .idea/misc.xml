@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/drawable/card_view.xml" value="0.155" />
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/drawable/ic_add_reminder.xml" value="0.155" />
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/drawable/ic_archive.xml" value="0.155" />
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/drawable/ic_label_outline.xml" value="0.2645" />
@@ -18,10 +19,13 @@
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/layout/activity_add_note.xml" value="0.268" />
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/layout/activity_label.xml" value="0.259375" />
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/layout/activity_main.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/layout/fragment_reminders.xml" value="0.16145833333333334" />
+        <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/layout/header.xml" value="0.16145833333333334" />
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/layout/list_labels_item.xml" value="0.259375" />
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/layout/list_notes_item.xml" value="0.259375" />
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/menu/add_note_menu.xml" value="0.259375" />
         <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/menu/drawer_menu.xml" value="0.259375" />
+        <entry key="..\:/Users/Thinkpad/Downloads/od/AndroidStudioProjects/Ghich/app/src/main/res/menu/notes_menu.xml" value="0.16145833333333334" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/Ghich/app/src/main/res/drawable/card_view.xml" value="0.19537037037037036" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/Ghich/app/src/main/res/drawable/ic_label_outline.xml" value="0.19537037037037036" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/Ghich/app/src/main/res/drawable/ic_navigation.xml" value="0.19537037037037036" />

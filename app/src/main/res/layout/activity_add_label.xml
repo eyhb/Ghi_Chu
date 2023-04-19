@@ -20,6 +20,37 @@
             android:layout_height="match_parent" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content">-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/imgLabel"-->
+    <!--            android:layout_width="55dp"-->
+    <!--            android:layout_height="55dp"-->
+    <!--            android:layout_alignParentStart="true"-->
+    <!--            android:padding="15dp"-->
+    <!--            android:src="@drawable/ic_label_outline" />-->
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/edLabel"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="55dp"-->
+    <!--            android:layout_toStartOf="@id/imgDelete"-->
+    <!--            android:layout_toEndOf="@id/imgLabel"-->
+    <!--            android:background="@null"-->
+    <!--            android:inputType="text|textNoSuggestions"-->
+    <!--            android:paddingHorizontal="20dp" />-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/imgDelete"-->
+    <!--            android:layout_width="55dp"-->
+    <!--            android:layout_height="55dp"-->
+    <!--            android:layout_alignParentEnd="true"-->
+    <!--            android:padding="15dp"-->
+    <!--            android:src="@drawable/ic_trash" />-->
+    <!--    </RelativeLayout>-->
+
     <ListView
         android:id="@+id/lvLabels"
         android:layout_width="match_parent"
